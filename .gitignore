@@ -1,0 +1,12 @@
+# backups created by fix-dsh-console-flash.ps1 inside the DSH Desktop install tree
+*.dshbak
+*.dshbak-*
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# editors
+.vscode/
+.idea/
+*.swp

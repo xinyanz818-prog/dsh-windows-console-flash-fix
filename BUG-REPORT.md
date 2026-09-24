@@ -7,7 +7,9 @@ This file records the problem, the analysis that located it, and a suggested fix
 - Operating system: Windows 11
 - DSH Desktop installation path: `D:\deepseek\DSH Desktop`
 - Packages involved: `@deepseek-ai/dsh-subprocess-local`, `@deepseek-ai/dsh-win32-process`
-- Permission presets: reproduces under both `workspace-write` and `danger-full-access`
+- DSH Desktop 0.2.5 (`DSH Desktop.exe` file version); bundled server `@dsh/server` 0.2.5
+- `@deepseek-ai/dsh-subprocess-local` and `@deepseek-ai/dsh-win32-process` 0.1.5-rc.1
+- `@openai/codex` 0.147.0- Permission presets: reproduces under both `workspace-write` and `danger-full-access`
 
 ## Steps to reproduce
 
@@ -58,6 +60,20 @@ Two sites omit the flag:
 
    None of these values implies a hidden console, so every command process receives a new visible console.
 
+## Verified scope
+
+| Site | Changed | Verified |
+| --- | --- | --- |
+| `dsh-win32-process` ordinary `CreateProcessW` (`dwCreationFlags` 1028) | yes | yes, under `danger-full-access`: `GetConsoleWindow()` returns 0 and no visible console window appears |
+| `dsh-win32-process` restricted-token `CreateProcessAsUserW` (4) | yes | no |
+| `dsh-win32-process` inherited-handle `CreateProcessAsUserW` (0) | yes | no |
+| `dsh-subprocess-local` Job runner spawn | yes | no |
+| five `spawn` calls under `src/engine/` | yes | no |
+
+- The two restricted-token sites serve the `read-only` and `workspace-write` presets; nothing was verified under those presets.
+- The five `src/engine/` sites were not exercised. The test machine has no git installed, so the git-related paths never ran.
+- No regression testing was done for background jobs, the integrated terminal (a separate pseudo-terminal path), plugin installation, or the packaged office tools. Removing the console from a child process can change the behaviour of commands that read console properties, such as `chcp` or `[Console]::WindowWidth`.
+- One observation remains unexplained: the owning thread of the visible console window was attributed to the command process rather than to conhost. The report states what was measured; the ownership model was not investigated further.
 ## Suggested fix
 
 ```diff

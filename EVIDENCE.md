@@ -2,6 +2,13 @@
 
 All measurements were taken on Windows 11 on the machine where the problem was reported. The probes were executed through the DSH Desktop pwsh tool, so they ran inside the same code path that produced the window. Labels in the original tool output were Chinese; the values are reproduced here unchanged with English labels.
 
+## Environment
+
+- DSH Desktop 0.2.5 (`DSH Desktop.exe` file version); bundled server `@dsh/server` 0.2.5
+- `@deepseek-ai/dsh-subprocess-local` and `@deepseek-ai/dsh-win32-process` 0.1.5-rc.1
+- `@openai/codex` 0.147.0
+- Permission preset during the post-fix measurements: `danger-full-access`
+
 ## Method
 
 - Window inspection: `EnumWindows` with `GetClassName`, `IsWindowVisible`, `GetWindowRect`, `GetWindowThreadProcessId`; the process's own console handle from `GetConsoleWindow`.
@@ -89,4 +96,4 @@ visible console windows while the command ran = none
 RESULT: PASS - no new visible console window appeared.
 ```
 
-Child processes started from within a command (`cmd.exe /c echo`) also produced no window.
+Child processes started from within a command (`cmd.exe /c echo`) also produced no window. All post-fix measurements were taken under the `danger-full-access` preset; the restricted-token paths (`CreateProcessAsUserW`) used by `read-only` and `workspace-write` were patched but not exercised. See the verified scope section in BUG-REPORT.md.

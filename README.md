@@ -51,7 +51,7 @@ All three standard streams being pipes rules out a pseudo-terminal path, so the 
 | `src/engine/agent_kernel/app_server_client.js` | codex app-server start | add `windowsHide: true` |
 | `src/engine/dsh_runtime/client.js` | runtime child process | add `windowsHide: true` |
 
-The first three rows address the cause. The remaining rows are the same class of problem: those spawn calls open console windows too, and the three git-related ones run on every turn.
+The first three rows address the cause. The remaining rows are the same class of problem: those spawn calls open console windows too, and the three git-related ones run on every turn. Only the ordinary `CreateProcessW` path has been verified after patching; the verified scope section in [BUG-REPORT.md](BUG-REPORT.md) lists what was and was not exercised.
 
 ## Usage
 

@@ -2,7 +2,7 @@
 
 Every command that DSH Desktop executes opens a console window on the desktop. This repository contains a script that patches an existing local installation to stop it.
 
-The repository does not include or redistribute any DSH Desktop code. The script modifies installed files in place; decide for yourself whether that is acceptable in your environment, and consider reporting the problem upstream as well (see [BUG-REPORT.md](BUG-REPORT.md)).
+The repository does not include or redistribute any DSH Desktop code. The script modifies installed files in place; decide for yourself whether that is acceptable in your environment, and consider reporting the problem upstream as well (see [BUG-REPORT.md](BUG-REPORT.md) for the report and [EVIDENCE.md](EVIDENCE.md) for the measurement record).
 
 ## Symptom
 
